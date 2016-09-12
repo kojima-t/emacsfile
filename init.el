@@ -1,50 +1,13 @@
 ;;; package --- samarry
 ;;; Commentary:
 ;;; Code:
-(require 'package)
-(add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/"))
-(package-initialize)
-(package-refresh-contents)
-;;; install packages:
-(package-install 'async)
-(package-install 'atom-one-dark-theme)
-(package-install 'auto-install)
-(package-install 'company)
-(package-install 'company-ghc)
-(package-install 'dash)
-(package-install 'epl)
-(package-install 'evil)
-(package-install 'evil-leader)
-(package-install 'evil-org)
-(package-install 'exec-path-from-shell)
-(package-install 'flycheck)
-(package-install 'flycheck-haskell)
-(package-install 'ghc)
-(package-install 'goto-chg)
-(package-install 'haskell-mode)
-(package-install 'helm)
-(package-install 'helm-ack)
-(package-install 'helm-ag)
-(package-install 'helm-core)
-(package-install 'helm-ls-git)
-(package-install 'helm-ls-hg)
-(package-install 'let-alist)
-(package-install 'macrostep)
-(package-install 'magit)
-(package-install 'neotree)
-(package-install 'open-junk-file)
-(package-install 'org)
-(package-install 'org-pandoc)
-(package-install 'org-wc)
-(package-install 'org-preview-html)
-(package-install 'pkg-info)
-(package-install 'popup)
-(package-install 'seq)
-(package-install 'slime)
-(package-install 'twittering-mode)
-(package-install 'undo-tree)
-(package-install 'yasnippet)
+(when (require 'package nil t)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+  (package-initialize))
+;;; my-library-path
+(add-to-list 'load-path "~/.emacs.d/my-elisp")
+;;; package install:
+(require 'package-list)
 ;;; basic config:
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
@@ -75,9 +38,13 @@
   (server-start))
 
 ;;; evil:
-(require 'evil)
-(evil-mode 1)
-(evil-ex-define-cmd "q[uit]" 'kill-buffer)
+(defun after-all-loads ()
+  (require 'evil)
+  (evil-mode 1)
+  (evil-ex-define-cmd "q[uit]" 'kill-buffer))
+(add-hook 'after-init-hook 'after-all-loads)
+
+
 
 ;;; exec-path-from-shell:
 (exec-path-from-shell-initialize)
