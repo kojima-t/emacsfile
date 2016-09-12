@@ -1,9 +1,50 @@
-;;; MELPA --- config:
-;;; package:
-(when (require 'package nil t)
-  (add-to-list 'package-archives
-	       '("melpa" . "http://melpa.milkbox.net/packages/"))
-  (package-initialize))
+;;; package --- samarry
+;;; Commentary:
+;;; Code:
+(require 'package)
+(add-to-list 'package-archives
+	     '("melpa" . "http://melpa.milkbox.net/packages/"))
+(package-initialize)
+(package-refresh-contents)
+;;; install packages:
+(package-install 'async)
+(package-install 'atom-one-dark-theme)
+(package-install 'auto-install)
+(package-install 'company)
+(package-install 'company-ghc)
+(package-install 'dash)
+(package-install 'epl)
+(package-install 'evil)
+(package-install 'evil-leader)
+(package-install 'evil-org)
+(package-install 'exec-path-from-shell)
+(package-install 'flycheck)
+(package-install 'flycheck-haskell)
+(package-install 'ghc)
+(package-install 'goto-chg)
+(package-install 'haskell-mode)
+(package-install 'helm)
+(package-install 'helm-ack)
+(package-install 'helm-ag)
+(package-install 'helm-core)
+(package-install 'helm-ls-git)
+(package-install 'helm-ls-hg)
+(package-install 'let-alist)
+(package-install 'macrostep)
+(package-install 'magit)
+(package-install 'neotree)
+(package-install 'open-junk-file)
+(package-install 'org)
+(package-install 'org-pandoc)
+(package-install 'org-wc)
+(package-install 'org-preview-html)
+(package-install 'pkg-info)
+(package-install 'popup)
+(package-install 'seq)
+(package-install 'slime)
+(package-install 'twittering-mode)
+(package-install 'undo-tree)
+(package-install 'yasnippet)
 ;;; basic config:
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
@@ -13,6 +54,7 @@
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 (setq c-hungry-delete-key t)
+(global-linum-mode t)
 (defun yel-yank ()
   "yank to cycle kill ring"
   (interactive "*")
@@ -22,23 +64,27 @@
     (yank 1)))
 
 (global-set-key "\C-y" 'yel-yank)
-;;; visual
+(global-set-key "\C-ct" 'toggle-truncate-lines)
 (if window-system (require 'atom-one-dark-theme)
   (load-theme 'manoj-dark t))
 (set-frame-font "Osaka－等幅 12")
-;; emacsclient
+
+;;; emacsclient:
 (require 'server)
 (unless (server-running-p)
   (server-start))
 
-;;; enable-evil
+;;; evil:
 (require 'evil)
 (evil-mode 1)
 (evil-ex-define-cmd "q[uit]" 'kill-buffer)
-;; exec-path-from-shell
-(exec-path-from-shell-initialize)
 
-;; company-mode
+;;; exec-path-from-shell:
+(exec-path-from-shell-initialize)
+;;; yasnippet
+(require 'yasnippet)
+(setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+;;; company-mode:
 (global-company-mode 1)
 (setq company-idle-delay 0) ; デフォルトは0.5
 (setq company-minimum-prefix-length 2) ; デフォルトは4
@@ -58,13 +104,11 @@
 (set-face-attribute 'company-scrollbar-bg nil
                     :background "gray40")
 
-; org-mode
-(global-set-key "\C-ct" 'toggle-truncate-lines)
+;;; org-mode:
 (defun edit-my-diary ()
   (interactive)
   (find-file "~/org/diary.org"))
 (global-set-key "\C-cd" 'edit-my-diary)
-; myCmd
 (defun org-html-open ()
   (interactive)
   (async-shell-command
@@ -76,7 +120,12 @@
   (setq org-src-fontify-natively t))
 (add-hook 'org-mode-hook 'my-org-hooks)
 
-; junk
+;;; org-babel
+(require 'ob-ruby)
+(require 'ob-sh)
+(require 'ob-lisp)
+(require 'ob-haskell)
+;;; junk:
 (require 'open-junk-file)
 (setq open-junk-file-format "~/org/junk/%Y-%m%d-%H%M%S.org")
 (global-set-key "\C-xj" 'my-open-junk-file)
@@ -92,8 +141,7 @@
   (insert "#+HTML_HEAD: <script type=\"text/javascript\" src=\"http://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.js\"></script>\n")
   (insert "#+HTML_HEAD: <script type=\"text/javascript\" src=\"http://www.pirilampo.org/styles/readtheorg/js/readtheorg.js\"></script>\n"))
 
-
-;; haskell
+;;; haskell:
 (autoload 'haskell-mode "haskell-mode" nil t)
 (autoload 'haskell-cabal "haskell-cabal" nil t)
 (autoload 'ghc-init "ghc" nil t)
@@ -120,9 +168,15 @@
   (ghc-init)
   (flymake-mode))
 (add-hook 'haskell-mode-hook 'my-haskell-mode-hook)
+;;; common lisp:
+(setq inferior-lisp-program "clisp")
+(require 'slime)
+(slime-setup '(slime-repl slime-fancy slime-banner))
 
+;;; Twitter:
 (setq twittering-icon-mode t)
 
+;;; helm:
 (require 'helm)
 (require 'helm-config)
 (helm-mode 1)
