@@ -2,7 +2,10 @@
 ;;; Commentary:
 ;;; Code:
 (when (require 'package nil t)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+  (add-to-list 'package-archives
+	       '("melpa" . "http://melpa.milkbox.net/packages/"))
+  (add-to-list 'package-archives
+	       '("org" . "http://orgmode.org/elpa/"))
   (package-initialize))
 ;;; my-library-path
 (add-to-list 'load-path "~/.emacs.d/my-elisp")
@@ -19,7 +22,7 @@
 (setq c-hungry-delete-key t)
 (global-linum-mode t)
 (defun yel-yank ()
-  "yank to cycle kill ring"
+  "Yank to cycle kill ring."
   (interactive "*")
   (if (or (eq last-command 'yank-pop)
           (eq last-command 'yank))
@@ -44,13 +47,13 @@
   (evil-ex-define-cmd "q[uit]" 'kill-buffer))
 (add-hook 'after-init-hook 'after-all-loads)
 
-
-
 ;;; exec-path-from-shell:
 (exec-path-from-shell-initialize)
 ;;; yasnippet
 (require 'yasnippet)
+(yas-global-mode 1)
 (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+
 ;;; company-mode:
 (global-company-mode 1)
 (setq company-idle-delay 0) ; デフォルトは0.5
@@ -79,7 +82,7 @@
 (defun org-html-open ()
   (interactive)
   (async-shell-command
-   (concat "chromium "
+   (concat "chromium-browser "
        (file-name-sans-extension buffer-file-name) ".html")))
 (defun my-org-hooks ()
   (interactive)
@@ -94,7 +97,7 @@
 (require 'ob-haskell)
 ;;; junk:
 (require 'open-junk-file)
-(setq open-junk-file-format "~/org/junk/%Y-%m%d-%H%M%S.org")
+(setq open-junk-file-format "~/org/junk/%Y-%m%d-%H%M%S")
 (global-set-key "\C-xj" 'my-open-junk-file)
 (defun my-open-junk-file ()
   (interactive)
@@ -118,7 +121,7 @@
 (add-to-list 'auto-mode-alist '("\\.lhs$" . literate-haskell-mode))
 (add-to-list 'auto-mode-alist '("\\.cabal$" . haskell-cabal-mode))
 
-(add-to-list 'company-backends 'company-ghc)
+(add-to-list 'company-backends '(company-ghc :with company-dabbrev-code))
 
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
