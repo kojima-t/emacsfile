@@ -34,26 +34,28 @@
 (if window-system (require 'atom-one-dark-theme)
   (load-theme 'manoj-dark t))
 (set-frame-font "Osaka－等幅 12")
-
+;;; Shell
+(setq explicit-shell-file-name "/usr/bin/fish")
+(setq shell-file-name "fish")
+(setenv "SHELL" shell-file-name)
+(add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m)
+(global-set-key [f1] 'shell)
 ;;; emacsclient:
 (require 'server)
 (unless (server-running-p)
   (server-start))
-
 ;;; evil:
 (defun after-all-loads ()
   (require 'evil)
   (evil-mode 1)
   (evil-ex-define-cmd "q[uit]" 'kill-buffer))
 (add-hook 'after-init-hook 'after-all-loads)
-
 ;;; exec-path-from-shell:
 (exec-path-from-shell-initialize)
 ;;; yasnippet
 (require 'yasnippet)
 (yas-global-mode 1)
 (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
-
 ;;; company-mode:
 (global-company-mode 1)
 (setq company-idle-delay 0) ; デフォルトは0.5
@@ -73,7 +75,14 @@
                     :background "orange")
 (set-face-attribute 'company-scrollbar-bg nil
                     :background "gray40")
-
+;;; quickrun:
+(require 'quickrun)
+(global-set-key [f5] 'quickrun)
+(setq quickrun-focus-p nil)
+(quickrun-add-command "haskell"
+		      '((:command . "stack runghc")
+			(:exec . ("%c %s")))
+			:override t)
 ;;; org-mode:
 (defun edit-my-diary ()
   (interactive)
