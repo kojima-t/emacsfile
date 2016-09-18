@@ -29,6 +29,7 @@
 (not-install-package-install 'helm-core)
 (not-install-package-install 'helm-ls-git)
 (not-install-package-install 'helm-ls-hg)
+(not-install-package-install 'htmlize)
 (not-install-package-install 'let-alist)
 (not-install-package-install 'macrostep)
 (not-install-package-install 'magit)
