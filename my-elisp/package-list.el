@@ -1,3 +1,5 @@
+;;; package-list.el --- list of installed package
+;;; Commentary: 
 ;;; define install function
 (defun not-install-package-install (package-name)
   "If you have not installed arg-pkg, this function install it."
@@ -33,6 +35,7 @@
 (not-install-package-install 'let-alist)
 (not-install-package-install 'macrostep)
 (not-install-package-install 'magit)
+(not-install-package-install 'markdown-mode)
 (not-install-package-install 'neotree)
 (not-install-package-install 'open-junk-file)
 (not-install-package-install 'org)
@@ -46,7 +49,9 @@
 (not-install-package-install 'slime)
 (not-install-package-install 'twittering-mode)
 (not-install-package-install 'undo-tree)
+(not-install-package-install 'use-package)
+(not-install-package-install 'w3m)
 (not-install-package-install 'yasnippet)
 (not-install-package-install 'yatex)
 (provide 'package-list)
-;;; init.el ends here
+;;; package-list.el ends here

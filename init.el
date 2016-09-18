@@ -179,7 +179,26 @@
 (setq inferior-lisp-program "clisp")
 (require 'slime)
 (slime-setup '(slime-repl slime-fancy slime-banner))
-
+;;; markdown-mode:
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "/home/hikaru515/source/peg-multimarkdown/multimarkdown"))
+(require 'w3m)
+(add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
+(defun my-markdown-mode-hook ()
+  (interactive)
+  (define-key markdown-mode-map "\C-c\C-cv"
+  (lambda ()
+    (interactive)
+    (setq html-file-name (concat (file-name-sans-extension (buffer-file-name)) ".html"))
+    (markdown-export html-file-name)
+    (if (one-window-p) (split-window))
+    (other-window 1)
+    (w3m-find-file html-file-name))))
 ;;; Twitter:
 (setq twittering-icon-mode t)
 
