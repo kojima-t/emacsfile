@@ -1,5 +1,34 @@
-;;; package --- samarry
+;;; init.el --- my init.el
 ;;; Commentary:
+;; Copyright (C) 2016 by Takahiro Kojima
+
+;; Author: Takahiro Kojima <12kojima.takahiro@gmail.com>
+;; URL: https://github.com/m16Takahiro/emacsfiles
+;; Version: 0.01
+;;; Package-Requires: (package-list)
+
+;; MIT License
+
+;; Copyright (c) 2016 Takahiro Kojima
+;; 
+;; Permission is hereby granted, free of charge, to any person obtaining a copy
+;; of this software and associated documentation files (the "Software"), to deal
+;; in the Software without restriction, including without limitation the rights
+;; to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+;; copies of the Software, and to permit persons to whom the Software is
+;; furnished to do so, subject to the following conditions:
+;; 
+;; The above copyright notice and this permission notice shall be included in all
+;; copies or substantial portions of the Software.
+;; 
+;; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+;; IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+;; FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+;; AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+;; LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;; SOFTWARE.
+
 ;;; Code:
 (when (require 'package nil t)
   (add-to-list 'package-archives
@@ -98,7 +127,8 @@
   (local-set-key "\C-co" 'org-html-open)
   (setq org-src-fontify-natively t))
 (add-hook 'org-mode-hook 'my-org-hooks)
-
+(when (require 'org-install nil t)
+  (setq org-export-htmlize-output-type 'css))
 ;;; org-babel
 (require 'ob-ruby)
 (require 'ob-sh)
@@ -128,8 +158,6 @@
 
 (add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
 (add-to-list 'auto-mode-alist '("\\.lhs$" . literate-haskell-mode))
-(add-to-list 'auto-mode-alist '("\\.cabal$" . haskell-cabal-mode))
-
 (add-to-list 'company-backends '(company-ghc :with company-dabbrev-code))
 
 (require 'flycheck)
@@ -164,6 +192,21 @@
 (require 'helm-ag)
 (setq helm-ag-base-command "ag --nocolor --nogrou")
 (global-set-key "\C-cs" 'helm-ag)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("54ece5659cc7acdcd529dddd78675c2972a5ac69260af4a6aec517dcea16208b" default))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
 
 (provide 'init)
 ;;; init.el ends here
