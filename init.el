@@ -63,6 +63,8 @@
 (if window-system (require 'atom-one-dark-theme)
   (load-theme 'manoj-dark t))
 (set-frame-font "Osaka－等幅 12")
+;;; window
+(windmove-default-keybindings 'meta)
 ;;; Shell
 (setq explicit-shell-file-name "/usr/bin/fish")
 (setq shell-file-name "fish")
@@ -173,7 +175,7 @@
   (setq haskell-program-name "/usr/bin/stack ghci")
   (inf-haskell-mode)
   (ghc-init)
-  (flymake-mode))
+  (flycheck-mode))
 (add-hook 'haskell-mode-hook 'my-haskell-mode-hook)
 ;;; common lisp:
 (setq inferior-lisp-program "clisp")
@@ -196,9 +198,11 @@
     (interactive)
     (setq html-file-name (concat (file-name-sans-extension (buffer-file-name)) ".html"))
     (markdown-export html-file-name)
-    (if (one-window-p) (split-window))
+    (if (one-window-p) (split-window-right))
     (other-window 1)
-    (w3m-find-file html-file-name))))
+    (if (get-buffer "*w3m*")
+        (prog2 (switch-to-buffer "*w3m*") (w3m-reload-this-page)) (w3m-find-file html-file-name))
+    (other-window 1))))
 ;;; Twitter:
 (setq twittering-icon-mode t)
 
