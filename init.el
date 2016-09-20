@@ -122,7 +122,7 @@
 (defun org-html-open ()
   (interactive)
   (async-shell-command
-   (concat "chromium-browser "
+   (concat "chromium "
        (file-name-sans-extension buffer-file-name) ".html")))
 (defun my-org-hooks ()
   (interactive)
@@ -223,7 +223,10 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("54ece5659cc7acdcd529dddd78675c2972a5ac69260af4a6aec517dcea16208b" default))))
+    ("54ece5659cc7acdcd529dddd78675c2972a5ac69260af4a6aec517dcea16208b" default)))
+ '(package-selected-packages
+   (quote
+    (yatex w3m use-package twittering-mode slime org-preview-html org-wc org-pandoc open-junk-file neotree markdown-mode magit macrostep htmlize helm-ls-hg helm-ls-git helm-ag helm-ack helm haskell-snippets flycheck-haskell flycheck fish-mode exec-path-from-shell evil-org evil-leader evil epl quickrun dash company-ghc company auto-install atom-one-dark-theme async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
