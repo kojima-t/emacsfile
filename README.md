@@ -1,8 +1,8 @@
 # emacsfiles
 
-This repository is used as controlling my emacs.d directory, init.el and list of installed package.
+This repository is used as controlling my emacs.d directory, init.el and list of my installed package.
 
-# Instration
+# Instllation
 
 If you would like to use my configuration, you should run the following command.
 
