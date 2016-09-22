@@ -87,6 +87,9 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+;;; flycheck:
+(require 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)
 ;;; company-mode:
 (global-company-mode 1)
 (setq company-idle-delay 0) ; デフォルトは0.5
@@ -157,13 +160,9 @@
 (autoload 'haskell-cabal "haskell-cabal" nil t)
 (autoload 'ghc-init "ghc" nil t)
 (autoload 'ghc-debug "ghc" nil t)
-
 (add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
 (add-to-list 'auto-mode-alist '("\\.lhs$" . literate-haskell-mode))
 (add-to-list 'company-backends '(company-ghc :with company-dabbrev-code))
-
-(require 'flycheck)
-(add-hook 'after-init-hook #'global-flycheck-mode)
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 (defun my-haskell-mode-hook ()
@@ -175,8 +174,30 @@
   (setq haskell-program-name "/usr/bin/stack ghci")
   (inf-haskell-mode)
   (ghc-init)
-  (flycheck-mode))
+  (flycheck-mode)
+  (smart-newline-mode t))
 (add-hook 'haskell-mode-hook 'my-haskell-mode-hook)
+;;; Ruby
+(autoload 'ruby-mode "ruby-mode"
+  "Mode for editing ruby source files" t)
+(autoload 'robe-mode "robe" "Code navigation, documentation lookup and completion for Ruby" t nil)
+(add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Capfile$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
+(add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
+(require 'ruby-end)
+(require 'ruby-block)
+(defun my-ruby-mode-hook ()
+  (ruby-block-mode t)
+  (setq ruby-block-highlight-toggle t)
+  (abbrev-mode 1)
+  (electric-pair-mode t)
+  (electric-indent-mode t)
+  (electric-layout-mode t)
+  (robe-mode)
+  (smart-newline-mode t))
+(eval-after-load 'company
+  '(push 'company-robe company-backends))
 ;;; common lisp:
 (setq inferior-lisp-program "clisp")
 (require 'slime)
@@ -226,7 +247,7 @@
     ("54ece5659cc7acdcd529dddd78675c2972a5ac69260af4a6aec517dcea16208b" default)))
  '(package-selected-packages
    (quote
-    (yatex w3m use-package twittering-mode slime org-preview-html org-wc org-pandoc open-junk-file neotree markdown-mode magit macrostep htmlize helm-ls-hg helm-ls-git helm-ag helm-ack helm haskell-snippets flycheck-haskell flycheck fish-mode exec-path-from-shell evil-org evil-leader evil epl quickrun dash company-ghc company auto-install atom-one-dark-theme async))))
+    (smart-newline smart-new-line yatex w3m use-package twittering-mode slime org-preview-html org-wc org-pandoc open-junk-file neotree markdown-mode magit macrostep htmlize helm-ls-hg helm-ls-git helm-ag helm-ack helm haskell-snippets flycheck-haskell flycheck fish-mode exec-path-from-shell evil-org evil-leader evil epl quickrun dash company-ghc company auto-install atom-one-dark-theme async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
