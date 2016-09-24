@@ -10,17 +10,17 @@
 ;; MIT License
 
 ;; Copyright (c) 2016 Takahiro Kojima
-;; 
+;;
 ;; Permission is hereby granted, free of charge, to any person obtaining a copy
 ;; of this software and associated documentation files (the "Software"), to deal
 ;; in the Software without restriction, including without limitation the rights
 ;; to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 ;; copies of the Software, and to permit persons to whom the Software is
 ;; furnished to do so, subject to the following conditions:
-;; 
+;;
 ;; The above copyright notice and this permission notice shall be included in all
 ;; copies or substantial portions of the Software.
-;; 
+;;
 ;; THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 ;; IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ;; FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
@@ -57,12 +57,12 @@
           (eq last-command 'yank))
       (yank-pop 1)
     (yank 1)))
-
 (global-set-key "\C-y" 'yel-yank)
 (global-set-key "\C-ct" 'toggle-truncate-lines)
 (if window-system (require 'atom-one-dark-theme)
   (load-theme 'manoj-dark t))
 (set-frame-font "Osaka－等幅 12")
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 ;;; window
 (windmove-default-keybindings 'meta)
 ;;; Shell
@@ -90,6 +90,8 @@
 ;;; flycheck:
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 ;;; company-mode:
 (global-company-mode 1)
 (setq company-idle-delay 0) ; デフォルトは0.5
@@ -154,29 +156,8 @@
   (insert "#+HTML_HEAD: <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js\"></script>\n")
   (insert "#+HTML_HEAD: <script type=\"text/javascript\" src=\"http://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.js\"></script>\n")
   (insert "#+HTML_HEAD: <script type=\"text/javascript\" src=\"http://www.pirilampo.org/styles/readtheorg/js/readtheorg.js\"></script>\n"))
-
-;;; haskell:
-(autoload 'haskell-mode "haskell-mode" nil t)
-(autoload 'haskell-cabal "haskell-cabal" nil t)
-(autoload 'ghc-init "ghc" nil t)
-(autoload 'ghc-debug "ghc" nil t)
-(add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
-(add-to-list 'auto-mode-alist '("\\.lhs$" . literate-haskell-mode))
-(add-to-list 'company-backends '(company-ghc :with company-dabbrev-code))
-(eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
-(defun my-haskell-mode-hook ()
-  (interactive)
-  (turn-on-haskell-indentation)
-  (turn-on-haskell-doc-mode)
-  (font-lock-mode)
-  (imenu-add-menubar-index)
-  (setq haskell-program-name "/usr/bin/stack ghci")
-  (inf-haskell-mode)
-  (ghc-init)
-  (flycheck-mode)
-  (smart-newline-mode t))
-(add-hook 'haskell-mode-hook 'my-haskell-mode-hook)
+;;; Haskell
+(require 'haskell)
 ;;; Ruby
 (autoload 'ruby-mode "ruby-mode"
   "Mode for editing ruby source files" t)
@@ -247,7 +228,7 @@
     ("54ece5659cc7acdcd529dddd78675c2972a5ac69260af4a6aec517dcea16208b" default)))
  '(package-selected-packages
    (quote
-    (smart-newline smart-new-line yatex w3m use-package twittering-mode slime org-preview-html org-wc org-pandoc open-junk-file neotree markdown-mode magit macrostep htmlize helm-ls-hg helm-ls-git helm-ag helm-ack helm haskell-snippets flycheck-haskell flycheck fish-mode exec-path-from-shell evil-org evil-leader evil epl quickrun dash company-ghc company auto-install atom-one-dark-theme async))))
+    (yaml-mode smart-newline smart-new-line yatex w3m use-package twittering-mode slime org-preview-html org-wc org-pandoc open-junk-file neotree markdown-mode magit macrostep htmlize helm-ls-hg helm-ls-git helm-ag helm-ack helm haskell-snippets flycheck-haskell flycheck fish-mode exec-path-from-shell evil-org evil-leader evil epl quickrun dash company-ghc company auto-install atom-one-dark-theme async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
