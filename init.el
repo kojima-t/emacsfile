@@ -36,10 +36,11 @@
   (add-to-list 'package-archives
 	       '("org" . "http://orgmode.org/elpa/"))
   (package-initialize))
+(require 'use-package)
 ;;; my-library-path
 (add-to-list 'load-path "~/.emacs.d/my-elisp")
 ;;; package install:
-(require 'package-list)
+(use-package package-list)
 ;;; basic config:
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
@@ -59,7 +60,7 @@
     (yank 1)))
 (global-set-key "\C-y" 'yel-yank)
 (global-set-key "\C-ct" 'toggle-truncate-lines)
-(if window-system (require 'atom-one-dark-theme)
+(if window-system (use-package atom-one-dark-theme)
   (load-theme 'manoj-dark t))
 (set-frame-font "Osaka－等幅 12")
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -72,23 +73,23 @@
 (add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m)
 (global-set-key [f1] 'shell)
 ;;; emacsclient:
-(require 'server)
+(use-package server)
 (unless (server-running-p)
   (server-start))
 ;;; evil:
 (defun after-all-loads ()
-  (require 'evil)
+  (use-package evil)
   (evil-mode 1)
   (evil-ex-define-cmd "q[uit]" 'kill-buffer))
 (add-hook 'after-init-hook 'after-all-loads)
 ;;; exec-path-from-shell:
 (exec-path-from-shell-initialize)
 ;;; yasnippet
-(require 'yasnippet)
+(use-package yasnippet)
 (yas-global-mode 1)
 (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
 ;;; flycheck:
-(require 'flycheck)
+(use-package flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
@@ -112,7 +113,7 @@
 (set-face-attribute 'company-scrollbar-bg nil
                     :background "gray40")
 ;;; quickrun:
-(require 'quickrun)
+(use-package quickrun)
 (global-set-key [f5] 'quickrun)
 (setq quickrun-focus-p nil)
 (quickrun-add-command "haskell"
@@ -137,12 +138,12 @@
 (when (require 'org-install nil t)
   (setq org-export-htmlize-output-type 'css))
 ;;; org-babel
-(require 'ob-ruby)
-(require 'ob-sh)
-(require 'ob-lisp)
-(require 'ob-haskell)
+(use-package ob-ruby)
+(use-package ob-sh)
+(use-package ob-lisp)
+(use-package ob-haskell)
 ;;; junk:
-(require 'open-junk-file)
+(use-package open-junk-file)
 (setq open-junk-file-format "~/org/junk/%Y-%m%d-%H%M%S")
 (global-set-key "\C-xj" 'my-open-junk-file)
 (defun my-open-junk-file ()
@@ -157,7 +158,7 @@
   (insert "#+HTML_HEAD: <script type=\"text/javascript\" src=\"http://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.js\"></script>\n")
   (insert "#+HTML_HEAD: <script type=\"text/javascript\" src=\"http://www.pirilampo.org/styles/readtheorg/js/readtheorg.js\"></script>\n"))
 ;;; Haskell
-(require 'haskell)
+(use-package haskell)
 ;;; Ruby
 (autoload 'ruby-mode "ruby-mode"
   "Mode for editing ruby source files" t)
@@ -166,8 +167,8 @@
 (add-to-list 'auto-mode-alist '("Capfile$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
 (add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
-(require 'ruby-end)
-(require 'ruby-block)
+(use-package ruby-end)
+(use-package ruby-block)
 (defun my-ruby-mode-hook ()
   (ruby-block-mode t)
   (setq ruby-block-highlight-toggle t)
@@ -176,12 +177,13 @@
   (electric-indent-mode t)
   (electric-layout-mode t)
   (robe-mode)
-  (smart-newline-mode t))
+  (smart-newline-mode t)
+  (inf-ruby))
 (eval-after-load 'company
   '(push 'company-robe company-backends))
 ;;; common lisp:
 (setq inferior-lisp-program "clisp")
-(require 'slime)
+(use-package slime)
 (slime-setup '(slime-repl slime-fancy slime-banner))
 ;;; markdown-mode:
 (use-package markdown-mode
@@ -191,7 +193,7 @@
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "/home/hikaru515/source/peg-multimarkdown/multimarkdown"))
-(require 'w3m)
+(use-package w3m)
 (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
 (defun my-markdown-mode-hook ()
   (interactive)
@@ -209,12 +211,12 @@
 (setq twittering-icon-mode t)
 
 ;;; helm:
-(require 'helm)
-(require 'helm-config)
+(use-package helm)
+(use-package helm-config)
 (helm-mode 1)
 (global-set-key "\M-x" #'helm-M-x)
 (global-set-key "\C-x\C-f" #'helm-find-files)
-(require 'helm-ag)
+(use-package helm-ag)
 (setq helm-ag-base-command "ag --nocolor --nogrou")
 (global-set-key "\C-cs" 'helm-ag)
 

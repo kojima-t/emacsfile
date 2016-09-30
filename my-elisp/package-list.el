@@ -1,5 +1,5 @@
 ;;; package-list.el --- list of installed package
-;;; Commentary: 
+;;; Commentary:
 ;;; define install function
 (defun not-install-package-install (package-name)
   "If you have not installed arg-pkg, this function install it."
@@ -56,6 +56,7 @@
 (not-install-package-install 'undo-tree)
 (not-install-package-install 'use-package)
 (not-install-package-install 'w3m)
+(not-install-package-install 'yaml-mode)
 (not-install-package-install 'yasnippet)
 (not-install-package-install 'yatex)
 (provide 'package-list)
