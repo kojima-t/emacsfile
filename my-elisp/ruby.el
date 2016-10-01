@@ -17,11 +17,12 @@
   (electric-pair-mode t)
   (electric-indent-mode t)
   (electric-layout-mode t)
-  (robe-mode)
   (smart-newline-mode t)
-  (inf-ruby))
-(eval-after-load 'company
-  '(push 'company-robe company-backends))
+  (inf-ruby)
+  (robe-mode)
+  (robe-start))
+
+(add-to-list 'company-backends '(company-robe :with company-dabbrev-code))
 
 (provide 'ruby)
 ;;; ruby.el ends here
