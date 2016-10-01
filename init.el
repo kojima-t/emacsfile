@@ -151,30 +151,9 @@
   (insert "#+HTML_HEAD: <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js\"></script>\n")
   (insert "#+HTML_HEAD: <script type=\"text/javascript\" src=\"http://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.js\"></script>\n")
   (insert "#+HTML_HEAD: <script type=\"text/javascript\" src=\"http://www.pirilampo.org/styles/readtheorg/js/readtheorg.js\"></script>\n"))
-;;; Haskell
+
 (use-package haskell)
-;;; Ruby
-(autoload 'ruby-mode "ruby-mode"
-  "Mode for editing ruby source files" t)
-(autoload 'robe-mode "robe" "Code navigation, documentation lookup and completion for Ruby" t nil)
-(add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Capfile$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
-(add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
-(use-package ruby-end)
-(use-package ruby-block)
-(defun my-ruby-mode-hook ()
-  (ruby-block-mode t)
-  (setq ruby-block-highlight-toggle t)
-  (abbrev-mode 1)
-  (electric-pair-mode t)
-  (electric-indent-mode t)
-  (electric-layout-mode t)
-  (robe-mode)
-  (smart-newline-mode t)
-  (inf-ruby))
-(eval-after-load 'company
-  '(push 'company-robe company-backends))
+(use-package ruby)
 ;;; common lisp:
 (setq inferior-lisp-program "clisp")
 (use-package slime)
