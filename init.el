@@ -32,6 +32,8 @@
 ;;; Code:
 (when (require 'package nil t)
   (add-to-list 'package-archives
+	       '("gnu" . "http://elpa.gnu.org/packages/"))
+  (add-to-list 'package-archives
 	       '("melpa" . "http://melpa.milkbox.net/packages/"))
   (add-to-list 'package-archives
 	       '("org" . "http://orgmode.org/elpa/"))
@@ -51,14 +53,6 @@
 (setq initial-scratch-message nil)
 (setq c-hungry-delete-key t)
 (global-linum-mode t)
-(defun yel-yank ()
-  "Yank to cycle kill ring."
-  (interactive "*")
-  (if (or (eq last-command 'yank-pop)
-          (eq last-command 'yank))
-      (yank-pop 1)
-    (yank 1)))
-(global-set-key "\C-y" 'yel-yank)
 (global-set-key "\C-ct" 'toggle-truncate-lines)
 (if window-system (use-package atom-one-dark-theme)
   (load-theme 'manoj-dark t))
@@ -76,6 +70,7 @@
 (use-package server)
 (unless (server-running-p)
   (server-start))
+;;; evil:
 ;;; evil:
 (defun after-all-loads ()
   (use-package evil)
@@ -131,7 +126,6 @@
    (concat "chromium "
        (file-name-sans-extension buffer-file-name) ".html")))
 (defun my-org-hooks ()
-  (interactive)
   (local-set-key "\C-co" 'org-html-open)
   (setq org-src-fontify-natively t))
 (add-hook 'org-mode-hook 'my-org-hooks)
@@ -192,11 +186,11 @@
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
-  :init (setq markdown-command "/home/hikaru515/source/peg-multimarkdown/multimarkdown"))
+  :init (setq markdown-command
+	      (expand-file-name "~/source/peg-multimarkdown/multimarkdown")))
 (use-package w3m)
 (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
 (defun my-markdown-mode-hook ()
-  (interactive)
   (define-key markdown-mode-map "\C-c\C-cv"
   (lambda ()
     (interactive)
@@ -210,15 +204,58 @@
 ;;; Twitter:
 (setq twittering-icon-mode t)
 
-;;; helm:
-(use-package helm)
+;;; migemo
+(when (locate-library "migemo")
+  (setq migemo-command "/usr/bin/cmigemo") ; HERE cmigemoバイナリ
+  (setq migemo-options '("-q" "--emacs"))
+  (setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict") ; HERE Migemo辞書
+  (setq migemo-user-dictionary nil)
+  (setq migemo-regex-dictionary nil)
+  (setq migemo-coding-system 'utf-8-unix)
+  (load-library "migemo")
+  (migemo-init))
+;;; helm
 (use-package helm-config)
 (helm-mode 1)
-(global-set-key "\M-x" #'helm-M-x)
-(global-set-key "\C-x\C-f" #'helm-find-files)
-(use-package helm-ag)
-(setq helm-ag-base-command "ag --nocolor --nogrou")
-(global-set-key "\C-cs" 'helm-ag)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(global-set-key (kbd "C-x C-r") 'helm-recentf)
+(global-set-key (kbd "M-y")     'helm-show-kill-ring)
+(global-set-key (kbd "C-c i")   'helm-imenu)
+(global-set-key (kbd "C-x b")   'helm-buffers-list)
+(global-set-key (kbd "M-r")     'helm-resume)
+(global-set-key (kbd "C-M-h")   'helm-apropos)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+(define-key helm-map (kbd "C-h") 'delete-backward-char)
+(define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
+(define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
+(define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
+
+(setq recentf-max-saved-items 500)
+(require 'recentf-ext)
+(setq helm-for-files-preferred-list
+      '(helm-source-buffers-list
+        helm-source-recentf
+        helm-source-bookmarks
+        helm-source-file-cache
+        helm-source-files-in-current-dir))
+
+;;; helm-migemo
+(helm-migemo-mode 1)
+(with-eval-after-load "helm-migemo"
+  (defun helm-compile-source--candidates-in-buffer (source)
+    (helm-aif (assoc 'candidates-in-buffer source)
+        (append source
+                `((candidates
+                   . ,(or (cdr it)
+                          (lambda ()
+                            ;; Do not use `source' because other plugins
+                            ;; (such as helm-migemo) may change it
+                            (helm-candidates-in-buffer (helm-get-current-source)))))
+                  (volatile) (match identity)))
+      source))
+ (defalias 'helm-mp-3-get-patterns 'helm-mm-3-get-patterns)
+  (defalias 'helm-mp-3-search-base 'helm-mm-3-search-base))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -230,7 +267,7 @@
     ("54ece5659cc7acdcd529dddd78675c2972a5ac69260af4a6aec517dcea16208b" default)))
  '(package-selected-packages
    (quote
-    (yaml-mode smart-newline smart-new-line yatex w3m use-package twittering-mode slime org-preview-html org-wc org-pandoc open-junk-file neotree markdown-mode magit macrostep htmlize helm-ls-hg helm-ls-git helm-ag helm-ack helm haskell-snippets flycheck-haskell flycheck fish-mode exec-path-from-shell evil-org evil-leader evil epl quickrun dash company-ghc company auto-install atom-one-dark-theme async))))
+    (helm-migemo migemo recentf-ext helm yaml-mode smart-newline smart-new-line yatex w3m use-package twittering-mode slime org-preview-html org-wc org-pandoc open-junk-file neotree markdown-mode magit macrostep htmlize haskell-snippets flycheck-haskell flycheck fish-mode exec-path-from-shell epl quickrun dash company-ghc company auto-install atom-one-dark-theme async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
