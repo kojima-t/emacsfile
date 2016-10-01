@@ -32,11 +32,11 @@
 ;;; Code:
 (when (require 'package nil t)
   (add-to-list 'package-archives
-	       '("gnu" . "http://elpa.gnu.org/packages/"))
+               '("gnu" . "http://elpa.gnu.org/packages/"))
   (add-to-list 'package-archives
-	       '("melpa" . "http://melpa.milkbox.net/packages/"))
+               '("melpa" . "http://melpa.milkbox.net/packages/"))
   (add-to-list 'package-archives
-	       '("org" . "http://orgmode.org/elpa/"))
+               (insert ) '("org" . "http://orgmode.org/elpa/"))
   (package-initialize))
 (require 'use-package)
 ;;; my-library-path
@@ -44,7 +44,13 @@
 ;;; package install:
 (use-package package-list)
 ;;; basic config:
+(set-locale-environment nil)
 (set-language-environment "Japanese")
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-buffer-file-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
 (prefer-coding-system 'utf-8)
 (setq make-backup-files nil)
 (setq auto-save-default nil)
@@ -52,7 +58,12 @@
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 (setq c-hungry-delete-key t)
-(global-linum-mode t)
+(setq-default tab-width 4 indent-tabs-mode nil)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(blink-cursor-mode 0)
+(global-hl-line-mode t)
+(show-paren-mode 1)
 (global-set-key "\C-ct" 'toggle-truncate-lines)
 (if window-system (use-package atom-one-dark-theme)
   (load-theme 'manoj-dark t))
@@ -60,6 +71,49 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 ;;; window
 (windmove-default-keybindings 'meta)
+(use-package whitespace)
+(setq whitespace-style '(face           ; faceで可視化
+                         trailing       ; 行末
+                         tabs           ; タブ
+                         spaces         ; スペース
+                         empty          ; 先頭/末尾の空行
+                         space-mark     ; 表示のマッピング
+                         tab-mark
+                         ))
+
+(setq whitespace-display-mappings
+      '((space-mark ?\u3000 [?\u25a1])
+        ;; WARNING: the mapping below has a problem.
+        ;; When a TAB occupies exactly one column, it will display the
+        ;; character ?\xBB at that column followed by a TAB which goes to
+        ;; the next TAB column.
+        ;; If this is a problem for you, please, comment the line below.
+        (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
+
+;; スペースは全角のみを可視化
+(setq whitespace-space-regexp "\\(\u3000+\\)")
+
+;; 保存前に自動でクリーンアップ
+(setq whitespace-action '(auto-cleanup))
+
+(global-whitespace-mode 1)
+
+(defvar my/bg-color "#232323")
+(set-face-attribute 'whitespace-trailing nil
+                    :background my/bg-color
+                    :foreground "DeepPink"
+                    :underline t)
+(set-face-attribute 'whitespace-tab nil
+                    :background my/bg-color
+                    :foreground "LightSkyBlue"
+                    :underline t)
+(set-face-attribute 'whitespace-space nil
+                    :background my/bg-color
+                    :foreground "GreenYellow"
+                    :weight 'bold)
+(set-face-attribute 'whitespace-empty nil
+                    :background my/bg-color)
+
 ;;; Shell
 (setq explicit-shell-file-name "/usr/bin/fish")
 (setq shell-file-name "fish")
@@ -71,11 +125,12 @@
 (unless (server-running-p)
   (server-start))
 ;;; evil:
-;;; evil:
 (defun after-all-loads ()
   (use-package evil)
   (evil-mode 1)
-  (evil-ex-define-cmd "q[uit]" 'kill-buffer))
+  (evil-ex-define-cmd "q[uit]" 'kill-buffer)
+  (global-evil-matchit-mode 1)
+  (global-evil-surround-mode 1))
 (add-hook 'after-init-hook 'after-all-loads)
 ;;; exec-path-from-shell:
 (exec-path-from-shell-initialize)
@@ -112,9 +167,9 @@
 (global-set-key [f5] 'quickrun)
 (setq quickrun-focus-p nil)
 (quickrun-add-command "haskell"
-		      '((:command . "stack runghc")
-			(:exec . ("%c %s")))
-			:override t)
+                      '((:command . "stack runghc")
+                        (:exec . ("%c %s")))
+                      :override t)
 ;;; org-mode:
 (defun edit-my-diary ()
   (interactive)
@@ -166,7 +221,7 @@
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command
-	      (expand-file-name "~/source/peg-multimarkdown/multimarkdown")))
+              (expand-file-name "~/source/peg-multimarkdown/multimarkdown")))
 (use-package w3m)
 (add-hook 'markdown-mode-hook 'my-markdown-mode-hook)
 (defun my-markdown-mode-hook ()
@@ -246,7 +301,7 @@
     ("54ece5659cc7acdcd529dddd78675c2972a5ac69260af4a6aec517dcea16208b" default)))
  '(package-selected-packages
    (quote
-    (helm-migemo migemo recentf-ext helm yaml-mode smart-newline smart-new-line yatex w3m use-package twittering-mode slime org-preview-html org-wc org-pandoc open-junk-file neotree markdown-mode magit macrostep htmlize haskell-snippets flycheck-haskell flycheck fish-mode exec-path-from-shell epl quickrun dash company-ghc company auto-install atom-one-dark-theme async))))
+    (evil-surround evil-matchit helm-migemo migemo recentf-ext helm yaml-mode smart-newline smart-new-line yatex w3m use-package twittering-mode slime org-preview-html org-wc org-pandoc open-junk-file neotree markdown-mode magit macrostep htmlize haskell-snippets flycheck-haskell flycheck fish-mode exec-path-from-shell epl quickrun dash company-ghc company auto-install atom-one-dark-theme async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
