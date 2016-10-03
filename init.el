@@ -41,6 +41,7 @@
 (require 'use-package)
 ;;; my-library-path
 (add-to-list 'load-path "~/.emacs.d/my-elisp")
+(add-to-list 'load-path "~/.emacs.d/evil-plugins")
 ;;; package install:
 (use-package package-list)
 ;;; basic config:
@@ -130,7 +131,9 @@
   (evil-mode 1)
   (evil-ex-define-cmd "q[uit]" 'kill-buffer)
   (global-evil-matchit-mode 1)
-  (global-evil-surround-mode 1))
+  (global-evil-surround-mode 1)
+  (use-package evil-mode-line)
+  )
 (add-hook 'after-init-hook 'after-all-loads)
 ;;; exec-path-from-shell:
 (exec-path-from-shell-initialize)
@@ -197,6 +200,7 @@
 (global-set-key "\C-xj" 'my-open-junk-file)
 (defun my-open-junk-file ()
   (interactive)
+  (setq open-junk-file-format "~/org/junk/%Y-%m%d-%H%M%S")
   (open-junk-file)
   (toggle-truncate-lines)
   (insert "#+TITLE:\n")
@@ -206,8 +210,19 @@
   (insert "#+HTML_HEAD: <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js\"></script>\n")
   (insert "#+HTML_HEAD: <script type=\"text/javascript\" src=\"http://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.js\"></script>\n")
   (insert "#+HTML_HEAD: <script type=\"text/javascript\" src=\"http://www.pirilampo.org/styles/readtheorg/js/readtheorg.js\"></script>\n"))
+(defun open-movie-file ()
+  (interactive)
+  (setq open-junk-file-format "~/blog/movie/")
+  (open-junk-file)
+  (insert "# TITLE\n")
+  (insert "### *Introduction*\n\n")
+  (insert "<!-- more -->\n\n")
+  (insert "### *Staff \& Cast*\n\n")
+  (insert "### *Summary*\n\n")
+  (insert "### *Impressions*\n\n")
+  (insert "### *Conclusion*"))
 
-(use-package haskell)
+(use-package my-haskell)
 (use-package ruby)
 ;;; common lisp:
 (setq inferior-lisp-program "clisp")
@@ -301,7 +316,7 @@
     ("54ece5659cc7acdcd529dddd78675c2972a5ac69260af4a6aec517dcea16208b" default)))
  '(package-selected-packages
    (quote
-    (evil-surround evil-matchit helm-migemo migemo recentf-ext helm yaml-mode smart-newline smart-new-line yatex w3m use-package twittering-mode slime org-preview-html org-wc org-pandoc open-junk-file neotree markdown-mode magit macrostep htmlize haskell-snippets flycheck-haskell flycheck fish-mode exec-path-from-shell epl quickrun dash company-ghc company auto-install atom-one-dark-theme async))))
+    (evil-org evil-smartparens evil-tutor-ja evil-surround evil-matchit helm-migemo migemo recentf-ext helm yaml-mode smart-newline smart-new-line yatex w3m use-package twittering-mode slime org-preview-html org-wc org-pandoc open-junk-file neotree markdown-mode magit macrostep htmlize haskell-snippets flycheck-haskell flycheck fish-mode exec-path-from-shell epl quickrun dash company-ghc company auto-install atom-one-dark-theme async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
