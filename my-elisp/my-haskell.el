@@ -7,9 +7,9 @@
 (autoload 'ghc-debug "ghc" nil t)
 (use-package haskell-mode
   :mode (("\\.hs$" . haskell-mode)
-	 ("\\.lhs$" . literate-haskell-mode))
+         ("\\.lhs$" . literate-haskell-mode))
   :init (add-to-list 'company-backends '(company-ghc :with company-dabbrev-code))
-	(setq haskell-program-name "/usr/bin/stack ghci")
+  (setq haskell-program-name "/usr/bin/stack ghci")
   :config (add-hook 'haskell-mode-hook 'my-haskell-mode-hook))
 (defun my-haskell-mode-hook ()
   "My haskell mode hook."
@@ -20,10 +20,10 @@
   (inf-haskell-mode)
   (ghc-init)
   (define-key haskell-mode-map
-		 "\C-cl" (lambda ()
-			      (interactive)
-			      (inferior-haskell-load-file)
-			      (other-window 1))))
+    "\C-cl" (lambda ()
+              (interactive)
+              (inferior-haskell-load-file)
+              (other-window 1))))
 
-(provide 'haskell)
+(provide 'my-haskell)
 ;;; haskell.el ends here
