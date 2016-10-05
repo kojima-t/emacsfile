@@ -26,4 +26,4 @@
               (other-window 1))))
 
 (provide 'my-haskell)
-;;; haskell.el ends here
+;;; my-haskell.el ends here
