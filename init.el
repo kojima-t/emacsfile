@@ -214,7 +214,7 @@
   (interactive)
   (setq open-junk-file-format "~/blog/movie/")
   (open-junk-file)
-  (insert "# TITLE\n")
+  (insert "# TITLE\n\n")
   (insert "### *Introduction*\n\n")
   (insert "<!-- more -->\n\n")
   (insert "### *Staff \& Cast*\n\n")
