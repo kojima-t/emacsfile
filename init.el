@@ -125,16 +125,6 @@
 (use-package server)
 (unless (server-running-p)
   (server-start))
-;;; evil:
-(defun after-all-loads ()
-  (use-package evil)
-  (evil-mode 1)
-  (evil-ex-define-cmd "q[uit]" 'kill-buffer)
-  (global-evil-matchit-mode 1)
-  (global-evil-surround-mode 1)
-  (use-package evil-mode-line)
-  )
-(add-hook 'after-init-hook 'after-all-loads)
 ;;; exec-path-from-shell:
 (exec-path-from-shell-initialize)
 ;;; yasnippet
@@ -250,61 +240,9 @@
     (if (get-buffer "*w3m*")
         (prog2 (switch-to-buffer "*w3m*") (w3m-reload-this-page)) (w3m-find-file html-file-name))
     (other-window 1))))
-;;; Twitter:
-(setq twittering-icon-mode t)
-
-;;; migemo
-(when (locate-library "migemo")
-  (setq migemo-command "/usr/bin/cmigemo") ; HERE cmigemoバイナリ
-  (setq migemo-options '("-q" "--emacs"))
-  (setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict") ; HERE Migemo辞書
-  (setq migemo-user-dictionary nil)
-  (setq migemo-regex-dictionary nil)
-  (setq migemo-coding-system 'utf-8-unix)
-  (load-library "migemo")
-  (migemo-init))
-;;; helm
-(use-package helm-config)
-(helm-mode 1)
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-(global-set-key (kbd "C-x C-r") 'helm-recentf)
-(global-set-key (kbd "M-y")     'helm-show-kill-ring)
-(global-set-key (kbd "C-c i")   'helm-imenu)
-(global-set-key (kbd "C-x b")   'helm-buffers-list)
-(global-set-key (kbd "M-r")     'helm-resume)
-(global-set-key (kbd "C-M-h")   'helm-apropos)
-(global-set-key (kbd "M-y") 'helm-show-kill-ring)
-(define-key helm-map (kbd "C-h") 'delete-backward-char)
-(define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
-(define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
-(define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
-
-(setq recentf-max-saved-items 500)
-(require 'recentf-ext)
-(setq helm-for-files-preferred-list
-      '(helm-source-buffers-list
-        helm-source-recentf
-        helm-source-bookmarks
-        helm-source-file-cache
-        helm-source-files-in-current-dir))
-
-;;; helm-migemo
-(helm-migemo-mode 1)
-(with-eval-after-load "helm-migemo"
-  (defun helm-compile-source--candidates-in-buffer (source)
-    (helm-aif (assoc 'candidates-in-buffer source)
-        (append source
-                `((candidates
-                   . ,(or (cdr it)
-                          (lambda ()
-                            ;; Do not use `source' because other plugins
-                            ;; (such as helm-migemo) may change it
-                            (helm-candidates-in-buffer (helm-get-current-source)))))
-                  (volatile) (match identity)))
-      source))
- (defalias 'helm-mp-3-get-patterns 'helm-mm-3-get-patterns)
-  (defalias 'helm-mp-3-search-base 'helm-mm-3-search-base))
+;;; anything.el
+(global-set-key "\C-x\C-am" 'anything-mini)
+(global-set-key "\C-x\C-f" 'anything-find-files)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -316,7 +254,7 @@
     ("54ece5659cc7acdcd529dddd78675c2972a5ac69260af4a6aec517dcea16208b" default)))
  '(package-selected-packages
    (quote
-    (evil-org evil-smartparens evil-tutor-ja evil-surround evil-matchit helm-migemo migemo recentf-ext helm yaml-mode smart-newline smart-new-line yatex w3m use-package twittering-mode slime org-preview-html org-wc org-pandoc open-junk-file neotree markdown-mode magit macrostep htmlize haskell-snippets flycheck-haskell flycheck fish-mode exec-path-from-shell epl quickrun dash company-ghc company auto-install atom-one-dark-theme async))))
+    (company-inf-ruby inf-ruby migemo recentf-ext yaml-mode smart-newline smart-new-line yatex w3m use-package slime org-preview-html org-wc org-pandoc open-junk-file neotree markdown-mode magit macrostep htmlize haskell-snippets flycheck-haskell flycheck fish-mode exec-path-from-shell epl quickrun dash company-ghc company auto-install atom-one-dark-theme async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -9,7 +9,7 @@
   :mode (("\\.hs$" . haskell-mode)
          ("\\.lhs$" . literate-haskell-mode))
   :init (add-to-list 'company-backends '(company-ghc :with company-dabbrev-code))
-  (setq haskell-program-name "/usr/bin/stack ghci")
+  (setq haskell-program-name "ghci")
   :config (add-hook 'haskell-mode-hook 'my-haskell-mode-hook))
 (defun my-haskell-mode-hook ()
   "My haskell mode hook."
