@@ -4,3 +4,9 @@ eshell
 recentf
 *~
 evil-plugins
+snippets/*
+!snippets/.gitkeep
+.python-environments
+session.*
+.emacs.desktop
+.emacs.desktop.lock
