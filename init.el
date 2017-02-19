@@ -65,12 +65,13 @@
 (global-hl-line-mode t)
 (show-paren-mode 1)
 (global-set-key "\C-ct" 'toggle-truncate-lines)
-(if window-system (use-package atom-one-dark-theme)
+(setq ring-bell-function 'ignore)
+(if window-system (load-theme 'molokai t)
   (load-theme 'manoj-dark t))
 (set-frame-font "Osaka－等幅 12")
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-;;; window
-(windmove-default-keybindings 'meta)
+;;; tabbar
+(use-package my-tabbar)
 (use-package whitespace)
 (setq whitespace-style '(face           ; faceで可視化
                          trailing       ; 行末
@@ -244,7 +245,7 @@
         (prog2 (switch-to-buffer "*w3m*") (w3m-reload-this-page)) (w3m-find-file html-file-name))
     (other-window 1))))
 ;;; anything.el
-(global-set-key "\C-x\C-am" 'anything-mini)
+(global-set-key "\C-x\C-r" 'anything-mini)
 (global-set-key "\C-x\C-f" 'anything-find-files)
 
 (custom-set-variables
@@ -258,7 +259,7 @@
  '(desktop-save-mode t)
  '(package-selected-packages
    (quote
-    (company-inf-ruby inf-ruby migemo recentf-ext yaml-mode smart-newline smart-new-line yatex w3m use-package slime org-preview-html org-wc org-pandoc open-junk-file neotree markdown-mode magit macrostep htmlize haskell-snippets flycheck-haskell flycheck fish-mode exec-path-from-shell epl quickrun dash company-ghc company auto-install atom-one-dark-theme async))))
+    (molokai-theme company-inf-ruby inf-ruby migemo recentf-ext yaml-mode smart-newline smart-new-line yatex w3m use-package slime org-preview-html org-wc org-pandoc open-junk-file neotree markdown-mode magit macrostep htmlize haskell-snippets flycheck-haskell flycheck fish-mode exec-path-from-shell epl quickrun dash company-ghc company auto-install atom-one-dark-theme async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

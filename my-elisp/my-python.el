@@ -1,10 +1,10 @@
-;;; haskell --- my haskell mode config and hooks
+;;; my-python --- my python mode config and hooks
 ;;; Commentary:
 ;;; Code:
 (defun my-python-mode-hook ()
   (add-to-list 'company-backends 'company-jedi)
   (jedi:setup)
-  (py-autopep8-enable-on-save))
+  (py-yapf-enable-on-save))
 
 ;;; using virtual environment
 (use-package pyvenv
