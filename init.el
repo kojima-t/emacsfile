@@ -41,7 +41,6 @@
 (require 'use-package)
 ;;; my-library-path
 (add-to-list 'load-path "~/.emacs.d/my-elisp")
-(add-to-list 'load-path "~/.emacs.d/evil-plugins")
 ;;; package install:
 (use-package package-list)
 ;;; basic config:
@@ -50,7 +49,7 @@
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (set-buffer-file-coding-system 'utf-8)
-(setq default-buffer-file-coding-system 'utf-8)
+(setq buffer-file-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (prefer-coding-system 'utf-8)
 (setq make-backup-files nil)
@@ -212,8 +211,12 @@
   (insert "### *Impressions*\n\n")
   (insert "### *Conclusion*"))
 
+;;; haskel;
 (use-package my-haskell)
+;;; ruby
 (use-package ruby)
+;;; python
+(use-package my-python)
 ;;; common lisp:
 (setq inferior-lisp-program "clisp")
 (use-package slime)
@@ -252,6 +255,7 @@
  '(custom-safe-themes
    (quote
     ("54ece5659cc7acdcd529dddd78675c2972a5ac69260af4a6aec517dcea16208b" default)))
+ '(desktop-save-mode t)
  '(package-selected-packages
    (quote
     (company-inf-ruby inf-ruby migemo recentf-ext yaml-mode smart-newline smart-new-line yatex w3m use-package slime org-preview-html org-wc org-pandoc open-junk-file neotree markdown-mode magit macrostep htmlize haskell-snippets flycheck-haskell flycheck fish-mode exec-path-from-shell epl quickrun dash company-ghc company auto-install atom-one-dark-theme async))))
