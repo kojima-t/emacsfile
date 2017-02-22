@@ -37,6 +37,7 @@
 (not-install-package-install 'org-pandoc)
 (not-install-package-install 'org-wc)
 (not-install-package-install 'org-preview-html)
+(not-install-package-install 'ox-gfm)
 (not-install-package-install 'py-yapf)
 (not-install-package-install 'pyvenv)
 (not-install-package-install 'pkg-info)

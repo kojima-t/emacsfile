@@ -38,6 +38,7 @@
   (add-to-list 'package-archives
                (insert ) '("org" . "http://orgmode.org/elpa/"))
   (package-initialize))
+(package-install 'use-package)
 (require 'use-package)
 ;;; my-library-path
 (add-to-list 'load-path "~/.emacs.d/my-elisp")
@@ -46,6 +47,14 @@
 ;;; basic config:
 (set-locale-environment nil)
 (set-language-environment "Japanese")
+(use-package mozc)
+(setq default-input-method "japanese-mozc")
+(global-set-key (kbd "<zenkaku-hankaku>") 'toggle-input-method)
+(global-set-key (kbd "C-\\") 'toggle-input-method)
+(add-hook 'mozc-mode-hook
+  (lambda()
+    (define-key mozc-mode-map (kbd "<zenkaku-hankaku>") 'toggle-input-method)
+    (define-key mozc-mode-map (kbd "C-\\") 'toggle-input-method)))
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (set-buffer-file-coding-system 'utf-8)
@@ -70,8 +79,10 @@
   (load-theme 'manoj-dark t))
 (set-frame-font "Osaka－等幅 12")
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-;;; tabbar
-(use-package my-tabbar)
+;;; kill all buffers
+(defun close-all-buffers ()
+  (interactive)
+  (mapc 'kill-buffer (buffer-list)))
 (use-package whitespace)
 (setq whitespace-style '(face           ; faceで可視化
                          trailing       ; 行末
@@ -179,11 +190,15 @@
 (add-hook 'org-mode-hook 'my-org-hooks)
 (when (require 'org-install nil t)
   (setq org-export-htmlize-output-type 'css))
+(eval-after-load "org"
+  '(require 'ox-gfm nil t))
 ;;; org-babel
 (use-package ob-ruby)
 (use-package ob-sh)
 (use-package ob-lisp)
 (use-package ob-haskell)
+(use-package ob-python)
+(use-package ob-ipython)
 ;;; junk:
 (use-package open-junk-file)
 (setq open-junk-file-format "~/org/junk/%Y-%m%d-%H%M%S")
@@ -215,7 +230,7 @@
 ;;; haskel;
 (use-package my-haskell)
 ;;; ruby
-(use-package ruby)
+(use-package my-ruby)
 ;;; python
 (use-package my-python)
 ;;; common lisp:
@@ -259,7 +274,7 @@
  '(desktop-save-mode t)
  '(package-selected-packages
    (quote
-    (molokai-theme company-inf-ruby inf-ruby migemo recentf-ext yaml-mode smart-newline smart-new-line yatex w3m use-package slime org-preview-html org-wc org-pandoc open-junk-file neotree markdown-mode magit macrostep htmlize haskell-snippets flycheck-haskell flycheck fish-mode exec-path-from-shell epl quickrun dash company-ghc company auto-install atom-one-dark-theme async))))
+    (ox-gfm ob-ipython molokai-theme company-inf-ruby inf-ruby migemo recentf-ext yaml-mode smart-newline smart-new-line yatex w3m use-package slime org-preview-html org-wc org-pandoc open-junk-file neotree markdown-mode magit macrostep htmlize haskell-snippets flycheck-haskell flycheck fish-mode exec-path-from-shell epl quickrun dash company-ghc company auto-install atom-one-dark-theme async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
