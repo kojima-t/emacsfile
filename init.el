@@ -77,7 +77,7 @@
 (setq ring-bell-function 'ignore)
 (if window-system (load-theme 'molokai t)
   (load-theme 'manoj-dark t))
-(set-frame-font "Osaka－等幅 12")
+(set-frame-font "Osaka－等幅 14")
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 ;;; kill all buffers
 (defun close-all-buffers ()
@@ -271,7 +271,6 @@
  '(custom-safe-themes
    (quote
     ("54ece5659cc7acdcd529dddd78675c2972a5ac69260af4a6aec517dcea16208b" default)))
- '(desktop-save-mode t)
  '(package-selected-packages
    (quote
     (ox-gfm ob-ipython molokai-theme company-inf-ruby inf-ruby migemo recentf-ext yaml-mode smart-newline smart-new-line yatex w3m use-package slime org-preview-html org-wc org-pandoc open-junk-file neotree markdown-mode magit macrostep htmlize haskell-snippets flycheck-haskell flycheck fish-mode exec-path-from-shell epl quickrun dash company-ghc company auto-install atom-one-dark-theme async))))
